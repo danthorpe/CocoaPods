@@ -11,6 +11,10 @@ To install release candidates run `[sudo] gem install cocoapods --pre`
 * Correctly filter Xcode warnings about the use of dynamic frameworks.  
   [Boris Bügling](https://github.com/neonichu)
 
+* Limit the check for transitive static binaries to those which are directly linked to the user target.  
+  [Boris Bügling](https://github.com/neonichu)
+  [#3194](https://github.com/CocoaPods/CocoaPods/issues/3194)
+
 
 ## 0.36.0.rc.1
 
