@@ -319,6 +319,16 @@ module Pod
       end.flatten
 
       @file_accessor = file_accessors.find { |accessor| accessor.spec.root.name == spec.root.name }
+
+      unless @file_accessor.nil?
+        dynamic_frameworks = @file_accessor.vendored_frameworks.select { |fw| `file #{fw + fw.basename('.framework')} 2>&1` =~ /dynamically linked/ }
+        dynamic_libraries = @file_accessor.vendored_libraries.select { |lib| `file #{lib} 2>&1` =~ /dynamically linked/ }
+        if (dynamic_frameworks.count > 0 || dynamic_libraries.count > 0) && consumer.platform_name == :ios &&
+            (deployment_target.nil? || Version.new(deployment_target).major < 8)
+          error('dynamic', 'Dynamic frameworks/libraries are only supported on iOS > 8.')
+        end
+      end
+
       config.silent
     end
 
